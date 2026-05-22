@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chef Ola IA 👨‍🍳</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    .header {
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid #ff6b3520;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo {
+      width: 45px;
+      height: 45px;
+      background: linear-gradient(135deg, #ff6b35, #f7931e);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+    .header-text h1 {
+      font-size: 18px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #ff6b35, #f7931e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .header-text p {
+      font-size: 11px;
+      color: #888;
+    }
+    .status {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: #4ade80;
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: #4ade80;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* TABS */
+    .tabs {
+      display: flex;
+      background: #111;
+      padding: 12px 16px;
+      gap: 8px;
+      overflow-x: auto;
+      border-bottom: 1px solid #222;
+    }
+    .tab {
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: all 0.3s;
+      background: #1e1e1e;
+      color: #888;
+    }
+    .tab.active {
+      background: linear-gradient(135deg, #ff6b35, #f7931e);
+      color: white;
+    }
+
+    /* MAIN */
+    .main { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding: 30px 0 20px;
+    }
+    .hero-emoji { font-size: 60px; margin-bottom: 12px; }
+    .hero h2 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #ff6b35, #f7931e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p { font-size: 13px; color: #888; line-height: 1.6; }
+
+    /* INPUT ZONE */
+    .input-card {
+      background: #1a1a2e;
+      border: 1px solid #ff6b3530;
+      border-radius: 20px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    .input-card label {
+      font-size: 13px;
+      color: #ff6b35;
+      font-weight: 600;
+      display: block;
+      margin-bottom: 10px;
+    }
+    .input-card textarea {
+      width: 100%;
+      background: #0d0d1a;
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 14px;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+      resize: none;
+      outline: none;
+      transition: border 0.3s;
+      min-height: 100px;
+    }
+    .input-card textarea:focus { border-color: #ff6b35; }
+    .input-card textarea::placeholder { color: #444; }
+
+    /* CHIPS */
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0;
+    }
+    .chip {
+      padding: 6px 14px;
+      background: #1e1e1e;
+      border: 1px solid #333;
+      border-radius: 20px;
+      font-size: 12px;
+      color: #aaa;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .chip:hover {
+      border-color: #ff6b35;
+      color: #ff6b35;
+    }
+
+    /* BUTTON */
+    .btn-generate {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #ff6b35, #f7931e);
+      border: none;
+      border-radius: 14px;
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-generate:hover { transform: translateY(-2px); box-shadow: 0 8px 25px #ff6b3540; }
+    .btn-generate:disabled { opacity: 0.6; transform: none; }
+
+    /* LOADING */
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 30px;
+    }
+    .loading.show { display: block; }
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid #1e1e1e;
+      border-top: 3px solid #ff6b35;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading p { color: #888; font-size: 14px; }
+
+    /* RESULT */
+    .result-card {
+      display: none;
+      background: #1a1a2e;
+      border: 1px solid #ff6b3530;
+      border-radius: 20px;
+      padding: 20px;
+      margin-top: 20px;
+      animation: fadeIn 0.5s ease;
+    }
+    .result-card.show { display: block; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .result-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #ffffff10;
+    }
+    .result-header span { font-size: 24px; }
+    .result-header h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #ff6b35;
+    }
+    .result-content {
+      font-size: 14px;
+      color: #ccc;
+      line-height: 1.8;
+      white-space: pre-wrap;
+    }
+
+    /* COPY BTN */
+    .btn-copy {
+      width: 100%;
+      padding: 12px;
+      background: transparent;
+      border: 1px solid #ff6b3550;
+      border-radius: 12px;
+      color: #ff6b35;
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 16px;
+      transition: all 0.3s;
+    }
+    .btn-copy:hover { background: #ff6b3510; }
+
+    /* ERROR */
+    .error {
+      display: none;
+      background: #2a1a1a;
+      border: 1px solid #ff444430;
+      border-radius: 12px;
+      padding: 16px;
+      color: #ff6b6b;
+      font-size: 13px;
+      margin-top: 16px;
+      text-align: center;
+    }
+    .error.show { display: block; }
+
+    /* FOOTER */
+    .footer {
+      text-align: center;
+      padding: 30px 16px;
+      color: #444;
+      font-size: 12px;
+    }
+    .footer span { color: #ff6b35; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo">👨‍🍳</div>
+    <div class="header-text">
+      <h1>Chef Ola IA</h1>
+      <p>Assistant culinaire intelligent</p>
+    </div>
+    <div class="status">
+      <div class="status-dot"></div>
+      En ligne
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" onclick="setTab('recette', this)">🍽️ Recette</button>
+    <button class="tab" onclick="setTab('menu', this)">📅 Menu du jour</button>
+    <button class="tab" onclick="setTab('conseil', this)">💡 Conseil</button>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-emoji">🍳</div>
+      <h2 id="hero-title">Quelle recette aujourd'hui ?</h2>
+      <p id="hero-subtitle">Entre tes ingrédients et Chef Ola crée ta recette en quelques secondes</p>
+    </div>
+
+    <!-- INPUT -->
+    <div class="input-card">
+      <label id="input-label">🥕 Tes ingrédients disponibles</label>
+      <textarea id="user-input" placeholder="Ex: tomates, oignons, poulet, riz..."></textarea>
+
+      <!-- SUGGESTIONS -->
+      <div class="chips" id="chips">
+        <div class="chip" onclick="addChip('tomates')">🍅 tomates</div>
+        <div class="chip" onclick="addChip('poulet')">🍗 poulet</div>
+        <div class="chip" onclick="addChip('riz')">🍚 riz</div>
+        <div class="chip" onclick="addChip('oignons')">🧅 oignons</div>
+        <div class="chip" onclick="addChip('œufs')">🥚 œufs</div>
+        <div class="chip" onclick="addChip('ail')">🧄 ail</div>
+      </div>
+
+      <button class="btn-generate" id="btn-main" onclick="generate()">
+        ✨ Générer ma recette
+      </button>
+    </div>
+
+    <!-- LOADING -->
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p>Chef Ola cuisine votre recette...</p>
+    </div>
+
+    <!-- ERROR -->
+    <div class="error" id="error">
+      ❌ Une erreur s'est produite. Vérifie ta connexion et réessaie.
+    </div>
+
+    <!-- RESULT -->
+    <div class="result-card" id="result">
+      <div class="result-header">
+        <span>👨‍🍳</span>
+        <h3 id="result-title">Votre recette est prête !</h3>
+      </div>
+      <div class="result-content" id="result-content"></div>
+      <button class="btn-copy" onclick="copyResult()">📋 Copier la recette</button>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    Fait avec ❤️ par <span>Chef Ola IA</span> • Propulsé par Mistral AI
+  </div>
+
+  <script>
+    const API = "https://chef-ola-ia-production.up.railway.app";
+    let currentTab = "recette";
+
+    function setTab(tab, el) {
+      currentTab = tab;
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+
+      const input = document.getElementById('user-input');
+      const label = document.getElementById('input-label');
+      const title = document.getElementById('hero-title');
+      const subtitle = document.getElementById('hero-subtitle');
+      const btn = document.getElementById('btn-main');
+      const chips = document.getElementById('chips');
+      const emoji = document.querySelector('.hero-emoji');
+
+      hideResult();
+
+      if (tab === 'recette') {
+        emoji.textContent = '🍳';
+        title.textContent = 'Quelle recette aujourd\'hui ?';
+        subtitle.textContent = 'Entre tes ingrédients et Chef Ola crée ta recette en quelques secondes';
+        label.textContent = '🥕 Tes ingrédients disponibles';
+        input.placeholder = 'Ex: tomates, oignons, poulet, riz...';
+        btn.textContent = '✨ Générer ma recette';
+        chips.style.display = 'flex';
+      } else if (tab === 'menu') {
+        emoji.textContent = '📅';
+        title.textContent = 'Menu du jour complet';
+        subtitle.textContent = 'Petit-déjeuner, déjeuner et dîner adaptés à tes ingrédients';
+        label.textContent = '🥕 Tes ingrédients disponibles';
+        input.placeholder = 'Ex: œufs, pain, légumes, viande...';
+        btn.innerHTML = '📅 Générer mon menu';
+        chips.style.display = 'flex';
+      } else {
+        emoji.textContent = '💡';
+        title.textContent = 'Un conseil de Chef Ola';
+        subtitle.textContent = 'Pose ta question culinaire et obtiens une réponse d\'expert';
+        label.textContent = '❓ Ta question cuisine';
+        input.placeholder = 'Ex: Comment éviter que mon riz colle ?';
+        btn.innerHTML = '💡 Obtenir un conseil';
+        chips.style.display = 'none';
+      }
+    }
+
+    function addChip(ingredient) {
+      const input = document.getElementById('user-input');
+      const val = input.value.trim();
+      input.value = val ? val + ', ' + ingredient : ingredient;
+    }
+
+    function hideResult() {
+      document.getElementById('result').classList.remove('show');
+      document.getElementById('error').classList.remove('show');
+      document.getElementById('loading').classList.remove('show');
+    }
+
+    async function generate() {
+      const input = document.getElementById('user-input').value.trim();
+      if (!input) {
+        alert('⚠️ Entre quelque chose d\'abord !');
+        return;
+      }
+
+      const btn = document.getElementById('btn-main');
+      btn.disabled = true;
+      hideResult();
+      document.getElementById('loading').classList.add('show');
+
+      try {
+        let url, body;
+
+        if (currentTab === 'recette') {
+          url = API + '/recipe';
+          body = { ingredients: input.split(',').map(i => i.trim()) };
+        } else if (currentTab === 'menu') {
+          url = API + '/menu';
+          body = { ingredients: input.split(',').map(i => i.trim()) };
+        } else {
+          url = API + '/conseil';
+          body = { question: input };
+        }
+
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+
+        const data = await res.json();
+        const content = data.recette || data.menu || data.conseil;
+
+        document.getElementById('loading').classList.remove('show');
+        document.getElementById('result-content').textContent = content;
+
+        const titles = {
+          recette: '🍽️ Votre recette est prête !',
+          menu: '📅 Votre menu du jour !',
+          conseil: '💡 Conseil de Chef Ola !'
+        };
+        document.getElementById('result-title').textContent = titles[currentTab];
+        document.getElementById('result').classList.add('show');
+
+      } catch (err) {
+        document.getElementById('loading').classList.remove('show');
+        document.getElementById('error').classList.add('show');
+      }
+
+      btn.disabled = false;
+    }
+
+    function copyResult() {
+      const content = document.getElementById('result-content').textContent;
+      navigator.clipboard.writeText(content).then(() => {
+        const btn = document.querySelector('.btn-copy');
+        btn.textContent = '✅ Copié !';
+        setTimeout(() => btn.textContent = '📋 Copier la recette', 2000);
+      });
+    }
+  </script>
+</body>
+  </html>
