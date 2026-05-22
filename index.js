@@ -1,0 +1,116 @@
+const express = require("express");
+const cors = require("cors");
+const { Mistral } = require("@mistralai/mistralai");
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+const client = new Mistral({ apiKey: process.env.MISTRAL_API_KEY });
+
+// ✅ Route test
+app.get("/", (req, res) => {
+  res.json({ message: "👨‍🍳 Chef Ola IA est en ligne !" });
+});
+
+// ✅ Route recette
+app.post("/recipe", async (req, res) => {
+  const { ingredients } = req.body;
+
+  if (!ingredients || ingredients.length === 0) {
+    return res.status(400).json({ error: "Aucun ingrédient fourni." });
+  }
+
+  const liste = ingredients.join(", ");
+
+  const prompt = `
+Tu es Chef Ola, un assistant culinaire intelligent et chaleureux.
+L'utilisateur a ces ingrédients : ${liste}.
+
+Génère une recette complète en français avec :
+1. 🍽️ Nom de la recette
+2. ⏱️ Temps de préparation et cuisson
+3. 👥 Nombre de personnes
+4. 📝 Liste des ingrédients avec quantités
+5. 👨‍🍳 Étapes détaillées et simples
+6. 💡 Un conseil du chef
+
+Si un ingrédient manque, propose une alternative simple.
+Sois encourageant et accessible pour les débutants.
+  `;
+
+  try {
+    const response = await client.chat.complete({
+      model: "mistral-small-latest",
+      messages: [{ role: "user", content: prompt }],
+    });
+
+    const recette = response.choices[0].message.content;
+    res.json({ recette });
+
+  } catch (error) {
+    console.error("Erreur Mistral:", error);
+    res.status(500).json({ error: "Erreur lors de la génération." });
+  }
+});
+
+// ✅ Route menu du jour
+app.post("/menu", async (req, res) => {
+  const { ingredients } = req.body;
+  const liste = ingredients?.join(", ") || "ingrédients de base";
+
+  const prompt = `
+Tu es Chef Ola. Avec ces ingrédients : ${liste}.
+Propose un menu complet pour la journée en français :
+🌅 Petit-déjeuner
+☀️ Déjeuner  
+🌙 Dîner
+Pour chaque repas : nom du plat + ingrédients + temps de préparation.
+  `;
+
+  try {
+    const response = await client.chat.complete({
+      model: "mistral-small-latest",
+      messages: [{ role: "user", content: prompt }],
+    });
+
+    res.json({ menu: response.choices[0].message.content });
+
+  } catch (error) {
+    console.error("Erreur Mistral:", error);
+    res.status(500).json({ error: "Erreur lors de la génération." });
+  }
+});
+
+// ✅ Route conseil
+app.post("/conseil", async (req, res) => {
+  const { question } = req.body;
+
+  if (!question) {
+    return res.status(400).json({ error: "Aucune question fournie." });
+  }
+
+  const prompt = `
+Tu es Chef Ola, un assistant culinaire expert.
+Réponds à cette question simplement : "${question}"
+Donne des conseils pratiques et encourage l'utilisateur.
+  `;
+
+  try {
+    const response = await client.chat.complete({
+      model: "mistral-small-latest",
+      messages: [{ role: "user", content: prompt }],
+    });
+
+    res.json({ conseil: response.choices[0].message.content });
+
+  } catch (error) {
+    console.error("Erreur Mistral:", error);
+    res.status(500).json({ error: "Erreur lors de la génération." });
+  }
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`✅ Chef Ola IA démarré sur le port ${PORT}`);
+});
