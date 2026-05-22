@@ -134,16 +134,15 @@
     let lastResult = "";
 
     function formatText(text) {
-      return text
-        .replace(/### (.+)/g, '<div class="section-title">$1</div>')
-        .replace(/## (.+)/g, '<div class="section-title2">$1</div>')
-        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*(.+?)\*/g, '<em>$1</em>')
-        .replace(/^- (.+)/gm, '<div class="step-item">$1</div>')
-        .replace(/\n\n/g, '<br><br>')
-        .replace(/\n/g, '<br>');
+  return text
+    .replace(/^#{1,3} (.+)/gm, '<div class="section-title">$1</div>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/^- (.+)/gm, '<div class="step-item">$1</div>')
+    .replace(/^---+$/gm, '<hr style="border:none;border-top:1px solid #ffffff10;margin:12px 0;">')
+    .replace(/\n\n/g, '<br><br>')
+    .replace(/\n/g, '<br>');
     }
-
     function setTab(tab, el) {
       currentTab = tab;
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
