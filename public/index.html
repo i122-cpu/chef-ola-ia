@@ -12,9 +12,14 @@
     .logo { width: 45px; height: 45px; background: linear-gradient(135deg, #ff6b35, #f7931e); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
     .header-text h1 { font-size: 18px; font-weight: 700; background: linear-gradient(135deg, #ff6b35, #f7931e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .header-text p { font-size: 11px; color: #888; }
-    .status { margin-left: auto; display: flex; align-items: center; gap: 6px; font-size: 11px; color: #4ade80; }
+    .header-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+    .status { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #4ade80; }
     .status-dot { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; animation: pulse 2s infinite; }
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+    /* LANGUE SELECTOR */
+    .lang-select { background: #0d0d1a; border: 1px solid #ff6b3540; border-radius: 8px; color: #ff6b35; font-family: 'Poppins', sans-serif; font-size: 12px; padding: 4px 8px; cursor: pointer; outline: none; }
+
     .tabs { display: flex; background: #111; padding: 12px 16px; gap: 8px; overflow-x: auto; border-bottom: 1px solid #222; }
     .tab { padding: 8px 16px; border-radius: 20px; border: none; cursor: pointer; font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 600; white-space: nowrap; transition: all 0.3s; background: #1e1e1e; color: #888; }
     .tab.active { background: linear-gradient(135deg, #ff6b35, #f7931e); color: white; }
@@ -54,8 +59,6 @@
     .btn-share:hover { background: #25D36620; }
     .error { display: none; background: #2a1a1a; border: 1px solid #ff444430; border-radius: 12px; padding: 16px; color: #ff6b6b; font-size: 13px; margin-top: 16px; text-align: center; }
     .error.show { display: block; }
-
-    /* HISTORIQUE */
     .history-page { display: none; }
     .history-page.show { display: block; }
     .history-empty { text-align: center; padding: 50px 20px; color: #444; }
@@ -72,8 +75,6 @@
     .history-item-title { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 4px; }
     .history-item-preview { font-size: 12px; color: #666; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
     .history-item-delete { float: right; background: none; border: none; color: #555; font-size: 18px; cursor: pointer; padding: 0 4px; }
-
-    /* MODAL */
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000000cc; z-index: 200; overflow-y: auto; }
     .modal.show { display: block; }
     .modal-content { background: #1a1a2e; margin: 20px 16px; border-radius: 20px; padding: 20px; border: 1px solid #ff6b3530; }
@@ -83,7 +84,6 @@
     .modal-body { font-size: 14px; color: #ccc; line-height: 1.9; }
     .modal-body strong { color: #fff; }
     .modal-body em { color: #aaa; }
-
     .footer { text-align: center; padding: 30px 16px; color: #444; font-size: 12px; }
     .footer span { color: #ff6b35; }
     .section-title { color: #ff6b35; font-weight: 700; margin: 14px 0 6px; font-size: 15px; }
@@ -96,34 +96,44 @@
     <div class="logo">👨‍🍳</div>
     <div class="header-text">
       <h1>Chef Ola IA</h1>
-      <p>Assistant culinaire intelligent</p>
+      <p id="header-sub">Assistant culinaire intelligent</p>
     </div>
-    <div class="status">
-      <div class="status-dot"></div>
-      En ligne
+    <div class="header-right">
+      <select class="lang-select" id="lang-select" onchange="changeLang(this.value)">
+        <option value="français">🇫🇷 FR</option>
+        <option value="english">🇬🇧 EN</option>
+        <option value="yoruba">🇳🇬 YO</option>
+        <option value="fon">🇧🇯 FON</option>
+        <option value="espagnol">🇪🇸 ES</option>
+        <option value="allemand">🇩🇪 DE</option>
+        <option value="chinois">🇨🇳 ZH</option>
+        <option value="japonais">🇯🇵 JA</option>
+        <option value="coréen">🇰🇷 KO</option>
+      </select>
+      <div class="status">
+        <div class="status-dot"></div>
+        <span id="status-text">En ligne</span>
+      </div>
     </div>
   </div>
 
   <div class="tabs">
-    <button class="tab active" onclick="setTab('recette', this)">🍽️ Recette</button>
-    <button class="tab" onclick="setTab('menu', this)">📅 Menu</button>
-    <button class="tab" onclick="setTab('conseil', this)">💡 Conseil</button>
-    <button class="tab" onclick="setTab('historique', this)">📚 Historique</button>
+    <button class="tab active" id="tab-recette" onclick="setTab('recette', this)">🍽️ <span class="t-recette">Recette</span></button>
+    <button class="tab" id="tab-menu" onclick="setTab('menu', this)">📅 <span class="t-menu">Menu</span></button>
+    <button class="tab" id="tab-conseil" onclick="setTab('conseil', this)">💡 <span class="t-conseil">Conseil</span></button>
+    <button class="tab" id="tab-historique" onclick="setTab('historique', this)">📚 <span class="t-historique">Historique</span></button>
   </div>
 
   <div class="main">
-
-    <!-- PAGE PRINCIPALE -->
     <div id="main-page">
       <div class="hero">
         <div class="hero-emoji">🍳</div>
-        <h2 id="hero-title">Quelle recette aujourd'hui ?</h2>
-        <p id="hero-subtitle">Entre tes ingrédients et Chef Ola crée ta recette en quelques secondes</p>
+        <h2 id="hero-title"></h2>
+        <p id="hero-subtitle"></p>
       </div>
-
       <div class="input-card">
-        <label id="input-label">🥕 Tes ingrédients disponibles</label>
-        <textarea id="user-input" placeholder="Ex: tomates, oignons, poulet, riz..."></textarea>
+        <label id="input-label"></label>
+        <textarea id="user-input"></textarea>
         <div class="chips" id="chips">
           <div class="chip" onclick="addChip('tomates')">🍅 tomates</div>
           <div class="chip" onclick="addChip('poulet')">🍗 poulet</div>
@@ -132,47 +142,37 @@
           <div class="chip" onclick="addChip('œufs')">🥚 œufs</div>
           <div class="chip" onclick="addChip('ail')">🧄 ail</div>
         </div>
-        <button class="btn-generate" id="btn-main" onclick="generate()">
-          ✨ Générer ma recette
-        </button>
+        <button class="btn-generate" id="btn-main" onclick="generate()"></button>
       </div>
-
       <div class="loading" id="loading">
         <div class="spinner"></div>
-        <p>Chef Ola cuisine votre recette...</p>
+        <p id="loading-text"></p>
       </div>
-
-      <div class="error" id="error">
-        ❌ Une erreur s'est produite. Vérifie ta connexion et réessaie.
-      </div>
-
+      <div class="error" id="error">❌ <span id="error-text"></span></div>
       <div class="result-card" id="result">
         <div class="result-header">
           <span>👨‍🍳</span>
-          <h3 id="result-title">Votre recette est prête !</h3>
+          <h3 id="result-title"></h3>
         </div>
         <div class="result-content" id="result-content"></div>
-        <button class="btn-copy" onclick="copyResult()">📋 Copier</button>
-        <button class="btn-share" onclick="shareWhatsApp()">💬 Partager sur WhatsApp</button>
+        <button class="btn-copy" id="btn-copy" onclick="copyResult()"></button>
+        <button class="btn-share" onclick="shareWhatsApp()">💬 WhatsApp</button>
       </div>
     </div>
 
-    <!-- PAGE HISTORIQUE -->
     <div id="history-page" class="history-page">
       <div class="history-header">
-        <h2>📚 Historique</h2>
-        <button class="btn-clear" onclick="clearHistory()">🗑️ Tout effacer</button>
+        <h2 id="history-title">📚 Historique</h2>
+        <button class="btn-clear" onclick="clearHistory()" id="btn-clear">🗑️ Effacer</button>
       </div>
       <div id="history-list"></div>
     </div>
-
   </div>
 
-  <!-- MODAL DETAIL -->
   <div class="modal" id="modal">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 id="modal-title">Recette</h3>
+        <h3 id="modal-title"></h3>
         <button class="btn-close" onclick="closeModal()">×</button>
       </div>
       <div class="modal-body" id="modal-body"></div>
@@ -186,7 +186,77 @@
   <script>
     const API = "https://chef-ola-ia-production.up.railway.app";
     let currentTab = "recette";
+    let currentLang = "français";
     let lastResult = "";
+
+    // TRADUCTIONS
+    const T = {
+      "français":  { recette:"Recette", menu:"Menu", conseil:"Conseil", historique:"Historique", hero_r:"Quelle recette aujourd'hui ?", sub_r:"Entre tes ingrédients et Chef Ola crée ta recette", hero_m:"Menu du jour complet", sub_m:"Petit-déjeuner, déjeuner et dîner adaptés à tes ingrédients", hero_c:"Un conseil de Chef Ola", sub_c:"Pose ta question culinaire", label_r:"🥕 Tes ingrédients disponibles", label_m:"🥕 Tes ingrédients disponibles", label_c:"❓ Ta question cuisine", ph_r:"Ex: tomates, oignons, poulet, riz...", ph_m:"Ex: œufs, pain, légumes, viande...", ph_c:"Ex: Comment éviter que mon riz colle ?", btn_r:"✨ Générer ma recette", btn_m:"📅 Générer mon menu", btn_c:"💡 Obtenir un conseil", loading:"Chef Ola cuisine votre recette...", error:"Une erreur s'est produite. Réessaie.", title_r:"🍽️ Votre recette est prête !", title_m:"📅 Votre menu du jour !", title_c:"💡 Conseil de Chef Ola !", copy:"📋 Copier", copied:"✅ Copié !", status:"En ligne", empty:"Aucune recette dans l'historique.", empty2:"Génère ta première recette !" },
+      "english":   { recette:"Recipe", menu:"Menu", conseil:"Tips", historique:"History", hero_r:"What's cooking today?", sub_r:"Enter your ingredients and Chef Ola creates your recipe", hero_m:"Full day menu", sub_m:"Breakfast, lunch and dinner adapted to your ingredients", hero_c:"A tip from Chef Ola", sub_c:"Ask your cooking question", label_r:"🥕 Your available ingredients", label_m:"🥕 Your available ingredients", label_c:"❓ Your cooking question", ph_r:"E.g: tomatoes, onions, chicken, rice...", ph_m:"E.g: eggs, bread, vegetables, meat...", ph_c:"E.g: How to avoid sticky rice?", btn_r:"✨ Generate my recipe", btn_m:"📅 Generate my menu", btn_c:"💡 Get a tip", loading:"Chef Ola is cooking your recipe...", error:"An error occurred. Please try again.", title_r:"🍽️ Your recipe is ready!", title_m:"📅 Your daily menu!", title_c:"💡 Chef Ola's tip!", copy:"📋 Copy", copied:"✅ Copied!", status:"Online", empty:"No recipes in history.", empty2:"Generate your first recipe!" },
+      "yoruba":    { recette:"Ounjẹ", menu:"Àkójọ", conseil:"Ìmọ̀ràn", historique:"Ìtàn", hero_r:"Kí ni a máa jẹ lónìí?", sub_r:"Tẹ àwọn ohun elo rẹ, Chef Ola yóò ṣẹ̀dá ounjẹ rẹ", hero_m:"Àkójọ ounjẹ ọjọ", sub_m:"Ounjẹ àárọ̀, ọsan àti alẹ", hero_c:"Ìmọ̀ràn lọ́wọ́ Chef Ola", sub_c:"Beere ibeere ounjẹ rẹ", label_r:"🥕 Àwọn ohun elo rẹ", label_m:"🥕 Àwọn ohun elo rẹ", label_c:"❓ Ibeere ounjẹ rẹ", ph_r:"Àpẹẹrẹ: tomati, alubosa, adie, iresi...", ph_m:"Àpẹẹrẹ: ẹyin, burẹdi, ẹfọ, eran...", ph_c:"Àpẹẹrẹ: Báwo ni mo ṣe lè jẹ kí iresi má fi mọra?", btn_r:"✨ Ṣẹ̀dá ounjẹ mi", btn_m:"📅 Ṣẹ̀dá àkójọ mi", btn_c:"💡 Gba ìmọ̀ràn", loading:"Chef Ola ń ṣe ounjẹ rẹ...", error:"Àṣìṣe wà. Gbiyanju lẹẹkansí.", title_r:"🍽️ Ounjẹ rẹ ti ṣetan!", title_m:"📅 Àkójọ ounjẹ rẹ!", title_c:"💡 Ìmọ̀ràn Chef Ola!", copy:"📋 Daakọ", copied:"✅ Ti daakọ!", status:"Lórí ìntánẹ́ẹ̀tì", empty:"Ko sí ounjẹ nínú ìtàn.", empty2:"Ṣẹ̀dá ounjẹ àkọ́kọ́ rẹ!" },
+      "fon":       { recette:"Nùblɔ̀", menu:"Nùkplɔ̀nmɛ", conseil:"Xósin", historique:"Nukɔntɔn", hero_r:"Etɛ mǐ na wlú égbé?", sub_r:"Ðó hwi towe lɛ bo wá, Chef Ola na wlán nùblɔ̀ towe", hero_m:"Nùkplɔ̀nmɛ zǎn ɖokpo tɔn", sub_m:"Nùblɔ̀ zǎzǎ, fínfɔ́n kɔ alɔ", hero_c:"Xósin ɖé bɔ Chef Ola na", sub_c:"Sprɛ́ nùkanbyɔ towe", label_r:"🥕 Hwi towe lɛ", label_m:"🥕 Hwi towe lɛ", label_c:"❓ Nùkanbyɔ towe", ph_r:"Kpɔ́ndéwú: tɔmati, ayikúngban, kpakpa, ɛmɛ...", ph_m:"Kpɔ́ndéwú: atín, kpɔ́sa, fàn...", ph_c:"Kpɔ́ndéwú: Nɛ́ mǐ ni wà dó ɛmɛ bɔ ma nyanya ó?", btn_r:"✨ Wlán nùblɔ̀ ce", btn_m:"📅 Wlán nùkplɔ̀nmɛ ce", btn_c:"💡 Mɔ xósin", loading:"Chef Ola ɖò nùblɔ̀ towe wlán wɛ...", error:"Nǔ ɖé jɛ. Lɛ́ lɛ̀ vlɛ.", title_r:"🍽️ Nùblɔ̀ towe ɖó!", title_m:"📅 Nùkplɔ̀nmɛ towe!", title_c:"💡 Xósin Chef Ola tɔn!", copy:"📋 Dó ɖó", copied:"✅ Dó ɖó có!", status:"Ðò internet jí", empty:"Nùblɔ̀ ɖě ɖo nukɔntɔn mɛ ǎ.", empty2:"Wlán nùblɔ̀ nukɔntɔn towe!" },
+      "espagnol":  { recette:"Receta", menu:"Menú", conseil:"Consejo", historique:"Historial", hero_r:"¿Qué cocinamos hoy?", sub_r:"Ingresa tus ingredientes y Chef Ola crea tu receta", hero_m:"Menú completo del día", sub_m:"Desayuno, almuerzo y cena adaptados a tus ingredientes", hero_c:"Un consejo de Chef Ola", sub_c:"Haz tu pregunta culinaria", label_r:"🥕 Tus ingredientes disponibles", label_m:"🥕 Tus ingredientes disponibles", label_c:"❓ Tu pregunta de cocina", ph_r:"Ej: tomates, cebollas, pollo, arroz...", ph_m:"Ej: huevos, pan, verduras, carne...", ph_c:"Ej: ¿Cómo evitar que el arroz se pegue?", btn_r:"✨ Generar mi receta", btn_m:"📅 Generar mi menú", btn_c:"💡 Obtener un consejo", loading:"Chef Ola está cocinando tu receta...", error:"Ocurrió un error. Inténtalo de nuevo.", title_r:"🍽️ ¡Tu receta está lista!", title_m:"📅 ¡Tu menú del día!", title_c:"💡 ¡Consejo de Chef Ola!", copy:"📋 Copiar", copied:"✅ ¡Copiado!", status:"En línea", empty:"No hay recetas en el historial.", empty2:"¡Genera tu primera receta!" },
+      "allemand":  { recette:"Rezept", menu:"Menü", conseil:"Tipp", historique:"Verlauf", hero_r:"Was kochen wir heute?", sub_r:"Gib deine Zutaten ein und Chef Ola erstellt dein Rezept", hero_m:"Vollständiges Tagesmenü", sub_m:"Frühstück, Mittagessen und Abendessen", hero_c:"Ein Tipp von Chef Ola", sub_c:"Stelle deine Kochfrage", label_r:"🥕 Deine verfügbaren Zutaten", label_m:"🥕 Deine verfügbaren Zutaten", label_c:"❓ Deine Kochfrage", ph_r:"z.B: Tomaten, Zwiebeln, Hähnchen, Reis...", ph_m:"z.B: Eier, Brot, Gemüse, Fleisch...", ph_c:"z.B: Wie verhindere ich, dass Reis klebt?", btn_r:"✨ Rezept generieren", btn_m:"📅 Menü generieren", btn_c:"💡 Tipp erhalten", loading:"Chef Ola kocht dein Rezept...", error:"Ein Fehler ist aufgetreten. Versuche es erneut.", title_r:"🍽️ Dein Rezept ist fertig!", title_m:"📅 Dein Tagesmenü!", title_c:"💡 Chef Olas Tipp!", copy:"📋 Kopieren", copied:"✅ Kopiert!", status:"Online", empty:"Keine Rezepte im Verlauf.", empty2:"Generiere dein erstes Rezept!" },
+      "chinois":   { recette:"食谱", menu:"菜单", conseil:"建议", historique:"历史", hero_r:"今天做什么菜?", sub_r:"输入您的食材，Chef Ola 将为您创建食谱", hero_m:"全天菜单", sub_m:"早餐、午餐和晚餐", hero_c:"Chef Ola 的建议", sub_c:"提出您的烹饪问题", label_r:"🥕 您的可用食材", label_m:"🥕 您的可用食材", label_c:"❓ 您的烹饪问题", ph_r:"例如：西红柿、洋葱、鸡肉、米饭...", ph_m:"例如：鸡蛋、面包、蔬菜、肉类...", ph_c:"例如：如何防止米饭粘锅?", btn_r:"✨ 生成我的食谱", btn_m:"📅 生成我的菜单", btn_c:"💡 获取建议", loading:"Chef Ola 正在为您烹饪...", error:"发生错误，请重试。", title_r:"🍽️ 您的食谱已准备好！", title_m:"📅 您的每日菜单！", title_c:"💡 Chef Ola 的建议！", copy:"📋 复制", copied:"✅ 已复制！", status:"在线", empty:"历史中没有食谱。", empty2:"生成您的第一个食谱！" },
+      "japonais":  { recette:"レシピ", menu:"メニュー", conseil:"アドバイス", historique:"履歴", hero_r:"今日は何を作りますか？", sub_r:"食材を入力すると、Chef Olaがレシピを作成します", hero_m:"一日のメニュー", sub_m:"朝食、昼食、夕食", hero_c:"Chef Olaのアドバイス", sub_c:"料理の質問をどうぞ", label_r:"🥕 お手持ちの食材", label_m:"🥕 お手持ちの食材", label_c:"❓ 料理の質問", ph_r:"例：トマト、玉ねぎ、鶏肉、ご飯...", ph_m:"例：卵、パン、野菜、肉...", ph_c:"例：ご飯がくっつかないようにするには？", btn_r:"✨ レシピを生成する", btn_m:"📅 メニューを生成する", btn_c:"💡 アドバイスをもらう", loading:"Chef Olaがレシピを作成中...", error:"エラーが発生しました。もう一度お試しください。", title_r:"🍽️ レシピが完成しました！", title_m:"📅 本日のメニュー！", title_c:"💡 Chef Olaのアドバイス！", copy:"📋 コピー", copied:"✅ コピーしました！", status:"オンライン", empty:"履歴にレシピがありません。", empty2:"最初のレシピを生成してください！" },
+      "coréen":    { recette:"레시피", menu:"메뉴", conseil:"조언", historique:"기록", hero_r:"오늘은 무엇을 요리할까요?", sub_r:"재료를 입력하면 Chef Ola가 레시피를 만들어드립니다", hero_m:"하루 전체 메뉴", sub_m:"아침, 점심, 저녁 식사", hero_c:"Chef Ola의 조언", sub_c:"요리 질문을 해보세요", label_r:"🥕 보유한 재료", label_m:"🥕 보유한 재료", label_c:"❓ 요리 질문", ph_r:"예: 토마토, 양파, 닭고기, 쌀...", ph_m:"예: 계란, 빵, 채소, 고기...", ph_c:"예: 밥이 달라붙지 않게 하려면?", btn_r:"✨ 레시피 생성", btn_m:"📅 메뉴 생성", btn_c:"💡 조언 받기", loading:"Chef Ola가 레시피를 만들고 있습니다...", error:"오류가 발생했습니다. 다시 시도해주세요.", title_r:"🍽️ 레시피가 준비되었습니다!", title_m:"📅 오늘의 메뉴!", title_c:"💡 Chef Ola의 조언!", copy:"📋 복사", copied:"✅ 복사됨!", status:"온라인", empty:"기록에 레시피가 없습니다.", empty2:"첫 번째 레시피를 생성하세요!" }
+    };
+
+    function t(key) { return T[currentLang][key] || T['français'][key]; }
+
+    function applyLang() {
+      document.getElementById('status-text').textContent = t('status');
+      document.querySelector('.t-recette').textContent = t('recette');
+      document.querySelector('.t-menu').textContent = t('menu');
+      document.querySelector('.t-conseil').textContent = t('conseil');
+      document.querySelector('.t-historique').textContent = t('historique');
+      updateTabContent();
+    }
+
+    function changeLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('chefola_lang', lang);
+      applyLang();
+    }
+
+    function updateTabContent() {
+      const tab = currentTab;
+      if (tab === 'historique') {
+        document.getElementById('history-title').textContent = '📚 ' + t('historique');
+        renderHistory();
+        return;
+      }
+      if (tab === 'recette') {
+        document.getElementById('hero-title').textContent = t('hero_r');
+        document.getElementById('hero-subtitle').textContent = t('sub_r');
+        document.getElementById('input-label').textContent = t('label_r');
+        document.getElementById('user-input').placeholder = t('ph_r');
+        document.getElementById('btn-main').textContent = t('btn_r');
+        document.getElementById('loading-text').textContent = t('loading');
+        document.querySelector('.hero-emoji').textContent = '🍳';
+        document.getElementById('chips').style.display = 'flex';
+      } else if (tab === 'menu') {
+        document.getElementById('hero-title').textContent = t('hero_m');
+        document.getElementById('hero-subtitle').textContent = t('sub_m');
+        document.getElementById('input-label').textContent = t('label_m');
+        document.getElementById('user-input').placeholder = t('ph_m');
+        document.getElementById('btn-main').textContent = t('btn_m');
+        document.getElementById('loading-text').textContent = t('loading');
+        document.querySelector('.hero-emoji').textContent = '📅';
+        document.getElementById('chips').style.display = 'flex';
+      } else {
+        document.getElementById('hero-title').textContent = t('hero_c');
+        document.getElementById('hero-subtitle').textContent = t('sub_c');
+        document.getElementById('input-label').textContent = t('label_c');
+        document.getElementById('user-input').placeholder = t('ph_c');
+        document.getElementById('btn-main').textContent = t('btn_c');
+        document.getElementById('loading-text').textContent = t('loading');
+        document.querySelector('.hero-emoji').textContent = '💡';
+        document.getElementById('chips').style.display = 'none';
+      }
+      document.getElementById('error-text').textContent = t('error');
+      document.getElementById('btn-copy').textContent = t('copy');
+    }
 
     function formatText(text) {
       return text
@@ -203,52 +273,17 @@
       currentTab = tab;
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
       el.classList.add('active');
-
       if (tab === 'historique') {
         document.getElementById('main-page').style.display = 'none';
         document.getElementById('history-page').classList.add('show');
         renderHistory();
         return;
       }
-
       document.getElementById('main-page').style.display = 'block';
       document.getElementById('history-page').classList.remove('show');
-
-      const input = document.getElementById('user-input');
-      const label = document.getElementById('input-label');
-      const title = document.getElementById('hero-title');
-      const subtitle = document.getElementById('hero-subtitle');
-      const btn = document.getElementById('btn-main');
-      const chips = document.getElementById('chips');
-      const emoji = document.querySelector('.hero-emoji');
+      document.getElementById('user-input').value = '';
       hideResult();
-      input.value = '';
-
-      if (tab === 'recette') {
-        emoji.textContent = '🍳';
-        title.textContent = "Quelle recette aujourd'hui ?";
-        subtitle.textContent = 'Entre tes ingrédients et Chef Ola crée ta recette en quelques secondes';
-        label.textContent = '🥕 Tes ingrédients disponibles';
-        input.placeholder = 'Ex: tomates, oignons, poulet, riz...';
-        btn.innerHTML = '✨ Générer ma recette';
-        chips.style.display = 'flex';
-      } else if (tab === 'menu') {
-        emoji.textContent = '📅';
-        title.textContent = 'Menu du jour complet';
-        subtitle.textContent = 'Petit-déjeuner, déjeuner et dîner adaptés à tes ingrédients';
-        label.textContent = '🥕 Tes ingrédients disponibles';
-        input.placeholder = 'Ex: œufs, pain, légumes, viande...';
-        btn.innerHTML = '📅 Générer mon menu';
-        chips.style.display = 'flex';
-      } else {
-        emoji.textContent = '💡';
-        title.textContent = 'Un conseil de Chef Ola';
-        subtitle.textContent = "Pose ta question culinaire et obtiens une réponse d'expert";
-        label.textContent = '❓ Ta question cuisine';
-        input.placeholder = 'Ex: Comment éviter que mon riz colle ?';
-        btn.innerHTML = '💡 Obtenir un conseil';
-        chips.style.display = 'none';
-      }
+      updateTabContent();
     }
 
     function addChip(ingredient) {
@@ -265,7 +300,7 @@
 
     async function generate() {
       const input = document.getElementById('user-input').value.trim();
-      if (!input) { alert("⚠️ Entre quelque chose d'abord !"); return; }
+      if (!input) { alert("⚠️ " + t('ph_r')); return; }
       const btn = document.getElementById('btn-main');
       btn.disabled = true;
       hideResult();
@@ -274,13 +309,13 @@
         let url, body;
         if (currentTab === 'recette') {
           url = API + '/recipe';
-          body = { ingredients: input.split(',').map(i => i.trim()) };
+          body = { ingredients: input.split(',').map(i => i.trim()), langue: currentLang };
         } else if (currentTab === 'menu') {
           url = API + '/menu';
-          body = { ingredients: input.split(',').map(i => i.trim()) };
+          body = { ingredients: input.split(',').map(i => i.trim()), langue: currentLang };
         } else {
           url = API + '/conseil';
-          body = { question: input };
+          body = { question: input, langue: currentLang };
         }
         const res = await fetch(url, {
           method: 'POST',
@@ -291,13 +326,10 @@
         lastResult = data.recette || data.menu || data.conseil;
         document.getElementById('loading').classList.remove('show');
         document.getElementById('result-content').innerHTML = formatText(lastResult);
-        const titles = { recette: '🍽️ Votre recette est prête !', menu: '📅 Votre menu du jour !', conseil: '💡 Conseil de Chef Ola !' };
+        const titles = { recette: t('title_r'), menu: t('title_m'), conseil: t('title_c') };
         document.getElementById('result-title').textContent = titles[currentTab];
         document.getElementById('result').classList.add('show');
-
-        // SAUVEGARDER dans l'historique
         saveToHistory(currentTab, input, lastResult);
-
       } catch (err) {
         document.getElementById('loading').classList.remove('show');
         document.getElementById('error').classList.add('show');
@@ -305,17 +337,9 @@
       btn.disabled = false;
     }
 
-    // ---- HISTORIQUE ----
     function saveToHistory(type, query, content) {
       const history = JSON.parse(localStorage.getItem('chefola_history') || '[]');
-      const item = {
-        id: Date.now(),
-        type,
-        query,
-        content,
-        date: new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
-      };
-      history.unshift(item);
+      history.unshift({ id: Date.now(), type, query, content, lang: currentLang, date: new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) });
       if (history.length > 30) history.pop();
       localStorage.setItem('chefola_history', JSON.stringify(history));
     }
@@ -324,37 +348,32 @@
       const history = JSON.parse(localStorage.getItem('chefola_history') || '[]');
       const container = document.getElementById('history-list');
       if (history.length === 0) {
-        container.innerHTML = '<div class="history-empty"><p>🍽️</p><span>Aucune recette dans l\'historique.<br>Génère ta première recette !</span></div>';
+        container.innerHTML = `<div class="history-empty"><p>🍽️</p><span>${t('empty')}<br>${t('empty2')}</span></div>`;
         return;
       }
       const icons = { recette: '🍽️', menu: '📅', conseil: '💡' };
-      const labels = { recette: 'Recette', menu: 'Menu', conseil: 'Conseil' };
       container.innerHTML = history.map(item => `
         <div class="history-item" onclick="openModal(${item.id})">
-          <button class="history-item-delete" onclick="deleteItem(event, ${item.id})">×</button>
+          <button class="history-item-delete" onclick="deleteItem(event,${item.id})">×</button>
           <div class="history-item-header">
-            <span class="history-item-type">${icons[item.type]} ${labels[item.type]}</span>
+            <span class="history-item-type">${icons[item.type]} ${item.type}</span>
             <span class="history-item-date">${item.date}</span>
           </div>
-          <div class="history-item-title">${item.query.substring(0, 50)}${item.query.length > 50 ? '...' : ''}</div>
-          <div class="history-item-preview">${item.content.substring(0, 100)}...</div>
-        </div>
-      `).join('');
+          <div class="history-item-title">${item.query.substring(0,50)}${item.query.length>50?'...':''}</div>
+          <div class="history-item-preview">${item.content.substring(0,100)}...</div>
+        </div>`).join('');
     }
 
     function openModal(id) {
       const history = JSON.parse(localStorage.getItem('chefola_history') || '[]');
       const item = history.find(h => h.id === id);
       if (!item) return;
-      const labels = { recette: '🍽️ Recette', menu: '📅 Menu', conseil: '💡 Conseil' };
-      document.getElementById('modal-title').textContent = labels[item.type] + ' — ' + item.query.substring(0, 30);
+      document.getElementById('modal-title').textContent = item.query.substring(0,40);
       document.getElementById('modal-body').innerHTML = formatText(item.content);
       document.getElementById('modal').classList.add('show');
     }
 
-    function closeModal() {
-      document.getElementById('modal').classList.remove('show');
-    }
+    function closeModal() { document.getElementById('modal').classList.remove('show'); }
 
     function deleteItem(e, id) {
       e.stopPropagation();
@@ -365,24 +384,30 @@
     }
 
     function clearHistory() {
-      if (confirm('Effacer tout l\'historique ?')) {
+      if (confirm(t('empty'))) {
         localStorage.removeItem('chefola_history');
         renderHistory();
       }
     }
-
+    
     function copyResult() {
       navigator.clipboard.writeText(lastResult).then(() => {
-        const btn = document.querySelector('.btn-copy');
-        btn.textContent = '✅ Copié !';
-        setTimeout(() => btn.textContent = '📋 Copier', 2000);
-            });
+        const btn = document.getElementById('btn-copy');
+        btn.textContent = t('copied');
+        setTimeout(() => btn.textContent = t('copy'), 2000);
+      });
     }
 
     function shareWhatsApp() {
-      const text = encodeURIComponent("🍳 Recette générée par Chef Ola IA :\n\n" + lastResult);
+      const text = encodeURIComponent("🍳 Chef Ola IA :\n\n" + lastResult);
       window.open("https://wa.me/?text=" + text, '_blank');
     }
+
+    // INIT
+    const savedLang = localStorage.getItem('chefola_lang') || 'français';
+    currentLang = savedLang;
+    document.getElementById('lang-select').value = savedLang;
+    applyLang();
   </script>
 </body>
 </html>
