@@ -17,6 +17,10 @@ app.use((req, res, next) => {
 const client = new Mistral({ apiKey: process.env.MISTRAL_API_KEY });
 
 app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "landing.html"));
+});
+
+app.get("/app", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
