@@ -1,10 +1,11 @@
-const CACHE_NAME = 'chefola-v1';
+const CACHE_NAME = 'chefola-v2';
 const urlsToCache = [
-  '/',
-  '/index.html'
+  '/app',
+  '/app/index.html'
 ];
 
 self.addEventListener('install', event => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
   );
@@ -14,7 +15,7 @@ self.addEventListener('fetch', event => {
   event.respondWith(
     fetch(event.request).catch(() =>
       caches.match(event.request).then(response =>
-        response || caches.match('/')
+        response || caches.match('/app')
       )
     )
   );
@@ -26,4 +27,5 @@ self.addEventListener('activate', event => {
       Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
     )
   );
+  self.clients.claim();
 });
