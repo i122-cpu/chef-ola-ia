@@ -7,16 +7,27 @@
   "background_color": "#0a0a0a",
   "theme_color": "#c9a227",
   "orientation": "portrait",
+  "id": "chef-ola-ia",
   "icons": [
     {
       "src": "/chef.jpg",
       "sizes": "192x192",
-      "type": "image/jpeg"
+      "type": "image/jpeg",
+      "purpose": "any maskable"
     },
     {
       "src": "/chef.jpg",
       "sizes": "512x512",
-      "type": "image/jpeg"
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/chef.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "form_factor": "narrow"
     }
   ]
 }
