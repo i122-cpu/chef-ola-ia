@@ -270,8 +270,13 @@ function applyLang() {
   document.getElementById('badge-text').textContent = t.badge;
   document.getElementById('hero-title').innerHTML = t.hero_title;
   document.getElementById('hero-subtitle').textContent = t.hero_sub;
-  document.getElementById('btn-try').innerHTML = t.btn_try;
-  document.getElementById('btn-discover').innerHTML = t.btn_disc;
+  const btnTry = document.getElementById('btn-try');
+btnTry.innerHTML = t.btn_try;
+btnTry.href = '/app';
+  const btnDisc = document.getElementById('btn-discover');
+btnDisc.innerHTML = t.btn_disc;
+btnDisc.href = '#features';
+btnDisc.onclick = function(){ document.getElementById('features').scrollIntoView({behavior:'smooth'}); return false; };
   document.getElementById('stat1').textContent = t.s1;
   document.getElementById('stat2').textContent = t.s2;
   document.getElementById('stat3').textContent = t.s3;
@@ -304,7 +309,9 @@ function applyLang() {
   document.getElementById('s3-desc').textContent = t.s3d;
   document.getElementById('cta-title').innerHTML = t.cta_t;
   document.getElementById('cta-sub').textContent = t.cta_s;
-  document.getElementById('btn-cta').innerHTML = t.btn_cta;
+  const btnCta = document.getElementById('btn-cta');
+btnCta.innerHTML = t.btn_cta;
+btnCta.href = '/app';
   document.getElementById('nav-cta').textContent = t.nav_cta;
   document.getElementById('lang-select').value = lang;
 }
