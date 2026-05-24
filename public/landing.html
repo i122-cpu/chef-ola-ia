@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chef Ola IA — Assistant Culinaire Intelligent</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    :root{--gold:#c9a227;--gold-light:#e8c547;--dark:#0a0a0a;--dark2:#111;--dark3:#1a1a2e;}
+    body{font-family:'Poppins',sans-serif;background:var(--dark);color:#fff;overflow-x:hidden;}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;width:100%;z-index:100;background:#0a0a0acc;backdrop-filter:blur(10px);border-bottom:1px solid #c9a22720;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;}
+    .nav-logo{display:flex;align-items:center;gap:10px;}
+    .nav-logo img{width:36px;height:36px;border-radius:8px;object-fit:cover;}
+    .nav-logo span{font-size:16px;font-weight:700;color:var(--gold);}
+    .nav-lang select{background:#1a1a2e;border:1px solid #c9a22740;border-radius:8px;color:var(--gold);font-family:'Poppins',sans-serif;font-size:12px;padding:6px 10px;outline:none;cursor:pointer;}
+    .nav-cta{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#000;font-family:'Poppins',sans-serif;font-size:13px;font-weight:700;padding:8px 18px;border-radius:20px;border:none;cursor:pointer;text-decoration:none;}
+
+    /* HERO */
+    .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 20px 60px;position:relative;overflow:hidden;}
+    .hero::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at 50% 30%,#c9a22715 0%,transparent 70%);}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;background:#c9a22715;border:1px solid #c9a22740;border-radius:20px;padding:8px 16px;font-size:12px;color:var(--gold);margin-bottom:24px;}
+    .hero-badge span{width:8px;height:8px;background:var(--gold);border-radius:50%;animation:pulse 2s infinite;}
+    .hero-avatar{width:120px;height:120px;border-radius:50%;border:4px solid var(--gold);object-fit:cover;margin-bottom:24px;box-shadow:0 0 40px #c9a22730;}
+    .hero h1{font-size:42px;font-weight:800;line-height:1.2;margin-bottom:16px;}
+    .hero h1 span{background:linear-gradient(135deg,var(--gold),var(--gold-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .hero p{font-size:16px;color:#aaa;max-width:500px;line-height:1.7;margin-bottom:32px;}
+    .hero-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
+    .btn-primary{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#000;font-family:'Poppins',sans-serif;font-size:15px;font-weight:700;padding:14px 28px;border-radius:14px;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:transform 0.2s;}
+    .btn-primary:hover{transform:translateY(-2px);}
+    .btn-secondary{background:transparent;color:var(--gold);font-family:'Poppins',sans-serif;font-size:15px;font-weight:600;padding:14px 28px;border-radius:14px;border:2px solid #c9a22750;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s;}
+    .btn-secondary:hover{background:#c9a22710;}
+    .hero-stats{display:flex;gap:32px;margin-top:48px;flex-wrap:wrap;justify-content:center;}
+    .stat{text-align:center;}
+    .stat-num{font-size:28px;font-weight:800;color:var(--gold);}
+    .stat-label{font-size:12px;color:#666;}
+
+    /* FEATURES */
+    .section{padding:80px 20px;max-width:700px;margin:0 auto;}
+    .section-badge{display:inline-block;background:#c9a22715;border:1px solid #c9a22740;border-radius:20px;padding:6px 16px;font-size:12px;color:var(--gold);margin-bottom:16px;}
+    .section h2{font-size:30px;font-weight:800;margin-bottom:12px;line-height:1.3;}
+    .section h2 span{background:linear-gradient(135deg,var(--gold),var(--gold-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .section p{color:#888;font-size:14px;line-height:1.7;margin-bottom:40px;}
+    .features{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+    .feature-card{background:#1a1a2e;border:1px solid #c9a22720;border-radius:20px;padding:20px;transition:all 0.3s;}
+    .feature-card:hover{border-color:#c9a22750;transform:translateY(-4px);}
+    .feature-icon{font-size:32px;margin-bottom:12px;}
+    .feature-card h3{font-size:15px;font-weight:700;color:#fff;margin-bottom:8px;}
+    .feature-card p{font-size:13px;color:#666;line-height:1.6;}
+
+    /* LANGUES */
+    .langs-section{background:#111;padding:60px 20px;text-align:center;}
+    .langs-title{font-size:24px;font-weight:800;margin-bottom:8px;}
+    .langs-title span{color:var(--gold);}
+    .langs-sub{color:#666;font-size:13px;margin-bottom:32px;}
+    .langs-grid{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:600px;margin:0 auto;}
+    .lang-pill{background:#1a1a2e;border:1px solid #c9a22730;border-radius:20px;padding:8px 18px;font-size:13px;color:#ccc;}
+
+    /* HOW IT WORKS */
+    .steps{display:flex;flex-direction:column;gap:20px;margin-top:40px;}
+    .step{display:flex;gap:16px;align-items:flex-start;}
+    .step-num{width:40px;height:40px;min-width:40px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#000;}
+    .step-content h3{font-size:15px;font-weight:700;margin-bottom:4px;}
+    .step-content p{font-size:13px;color:#666;line-height:1.6;}
+
+    /* DEMO */
+    .demo-card{background:#1a1a2e;border:1px solid #c9a22730;border-radius:20px;padding:20px;margin-top:40px;}
+    .demo-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #ffffff10;}
+    .demo-header img{width:32px;height:32px;border-radius:8px;object-fit:cover;}
+    .demo-header span{font-size:14px;font-weight:700;color:var(--gold);}
+    .demo-content{font-size:13px;color:#ccc;line-height:1.8;}
+    .demo-content strong{color:#fff;}
+
+    /* CTA FINAL */
+    .cta-section{background:linear-gradient(135deg,#1a1500,#0a0a0a);border-top:1px solid #c9a22720;padding:80px 20px;text-align:center;}
+    .cta-section h2{font-size:30px;font-weight:800;margin-bottom:12px;}
+    .cta-section h2 span{color:var(--gold);}
+    .cta-section p{color:#888;font-size:14px;margin-bottom:32px;}
+
+    /* FOOTER */
+    footer{background:#050505;border-top:1px solid #c9a22715;padding:30px 20px;text-align:center;color:#444;font-size:12px;}
+    footer span{color:var(--gold);}
+
+    @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+    @media(max-width:480px){.hero h1{font-size:28px;}.features{grid-template-columns:1fr;}.hero-stats{gap:20px;}}
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <img src="/chef.png" alt="Chef Ola"/>
+    <span>Chef Ola IA</span>
+  </div>
+  <div class="nav-lang">
+    <select onchange="changeLang(this.value)">
+      <option value="fr">🇫🇷 FR</option>
+      <option value="en">🇬🇧 EN</option>
+      <option value="yo">🇳🇬 YO</option>
+      <option value="fon">🇧🇯 FON</option>
+      <option value="es">🇪🇸 ES</option>
+      <option value="de">🇩🇪 DE</option>
+      <option value="zh">🇨🇳 ZH</option>
+      <option value="ja">🇯🇵 JA</option>
+      <option value="ko">🇰🇷 KO</option>
+    </select>
+  </div>
+  <a href="/index.html" class="nav-cta" id="nav-cta">Essayer</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge"><span></span><span id="badge-text">Assistant IA • 100% Gratuit</span></div>
+  <img src="/chef.png" alt="Chef Ola" class="hero-avatar"/>
+  <h1 id="hero-title">Cuisinez mieux avec<br/><span>l'Intelligence Artificielle</span></h1>
+  <p id="hero-subtitle">Chef Ola IA analyse vos ingrédients et génère des recettes complètes, personnalisées et délicieuses en quelques secondes.</p>
+  <div class="hero-btns">
+    <a href="/index.html" class="btn-primary" id="btn-try">🍳 Essayer gratuitement</a>
+    <a href="#features" class="btn-secondary" id="btn-discover">✨ Découvrir</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">9</div><div class="stat-label" id="stat1">Langues</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label" id="stat2">Recettes</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label" id="stat3">Gratuit</div></div>
+    <div class="stat"><div class="stat-num">24/7</div><div class="stat-label" id="stat4">Disponible</div></div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section" id="features">
+  <div class="section-badge" id="feat-badge">Fonctionnalités</div>
+  <h2 id="feat-title">Tout ce dont vous avez<br/><span>besoin pour cuisiner</span></h2>
+  <p id="feat-sub">Une application complète, simple et intelligente.</p>
+  <div class="features">
+    <div class="feature-card">
+      <div class="feature-icon">🍽️</div>
+      <h3 id="f1-title">Recettes IA</h3>
+      <p id="f1-desc">Entrez vos ingrédients, obtenez une recette complète avec étapes détaillées.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📅</div>
+      <h3 id="f2-title">Menu du jour</h3>
+      <p id="f2-desc">Petit-déjeuner, déjeuner et dîner adaptés à vos ingrédients.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💡</div>
+      <h3 id="f3-title">Conseils cuisine</h3>
+      <p id="f3-desc">Posez vos questions, obtenez des réponses d'expert instantanément.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📚</div>
+      <h3 id="f4-title">Historique</h3>
+      <p id="f4-desc">Retrouvez toutes vos recettes sauvegardées automatiquement.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📵</div>
+      <h3 id="f5-title">Hors ligne</h3>
+      <p id="f5-desc">Accédez à vos recettes même sans connexion internet.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💬</div>
+      <h3 id="f6-title">Partage WhatsApp</h3>
+      <p id="f6-desc">Partagez vos recettes avec vos proches en un clic.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LANGUES -->
+<div class="langs-section">
+  <h2 class="langs-title" id="lang-title">Disponible en <span>9 langues</span></h2>
+  <p class="langs-sub" id="lang-sub">Pour toute l'Afrique et le monde entier</p>
+  <div class="langs-grid">
+    <div class="lang-pill">🇫🇷 Français</div>
+    <div class="lang-pill">🇬🇧 English</div>
+    <div class="lang-pill">🇳🇬 Yoruba</div>
+    <div class="lang-pill">🇧🇯 Fon</div>
+    <div class="lang-pill">🇪🇸 Español</div>
+    <div class="lang-pill">🇩🇪 Deutsch</div>
+    <div class="lang-pill">🇨🇳 中文</div>
+    <div class="lang-pill">🇯🇵 日本語</div>
+    <div class="lang-pill">🇰🇷 한국어</div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="section">
+  <div class="section-badge" id="how-badge">Comment ça marche</div>
+  <h2 id="how-title">Simple comme<br/><span>bonjour</span></h2>
+  <p id="how-sub">3 étapes pour votre recette parfaite.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h3 id="s1-title">Entrez vos ingrédients</h3>
+        <p id="s1-desc">Tapez ce que vous avez dans votre cuisine ou choisissez dans les suggestions.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h3 id="s2-title">Chef Ola analyse</h3>
+        <p id="s2-desc">Notre IA analyse vos ingrédients et crée une recette personnalisée en quelques secondes.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h3 id="s3-title">Cuisinez et régalez-vous</h3>
+        <p id="s3-desc">Suivez les étapes détaillées et partagez votre création avec vos proches.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEMO -->
+  <div class="demo-card">
+    <div class="demo-header">
+      <img src="/chef.png" alt="Chef Ola"/>
+      <span>Chef Ola IA</span>
+    </div>
+    <div class="demo-content" id="demo-content">
+      🍽️ <strong>Riz au poulet aux tomates fondantes</strong><br/><br/>
+      ⏱️ <strong>Temps :</strong> 40 minutes • 👥 <strong>Pour :</strong> 2 personnes<br/><br/>
+      👨‍🍳 <strong>Étapes :</strong><br/>
+      1. Faire revenir le poulet avec l'ail et les oignons<br/>
+      2. Ajouter les tomates et laisser mijoter 10 min<br/>
+      3. Cuire le riz séparément puis mélanger<br/><br/>
+      💡 <strong>Conseil :</strong> Ajoutez une pincée de curcuma pour plus de saveur !
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-section">
+  <h2 id="cta-title">Prêt à cuisiner avec<br/><span>Chef Ola IA ?</span></h2>
+  <p id="cta-sub">Gratuit, rapide et disponible partout. Aucune inscription requise.</p>
+  <a href="/index.html" class="btn-primary" id="btn-cta">🍳 Commencer maintenant</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>Fait avec ❤️ par <span>Chef Ola IA</span> • Propulsé par Mistral AI • <span>100% Gratuit</span></p>
+</footer>
+
+<script>
+const L = {
+  fr:{badge:"Assistant IA • 100% Gratuit",hero_title:"Cuisinez mieux avec<br/><span>l'Intelligence Artificielle</span>",hero_sub:"Chef Ola IA analyse vos ingrédients et génère des recettes complètes en quelques secondes.",btn_try:"🍳 Essayer gratuitement",btn_disc:"✨ Découvrir",s1:"Langues",s2:"Recettes",s3:"Gratuit",s4:"Disponible",feat_badge:"Fonctionnalités",feat_title:"Tout ce dont vous avez<br/><span>besoin pour cuisiner</span>",feat_sub:"Une application complète, simple et intelligente.",f1t:"Recettes IA",f1d:"Entrez vos ingrédients, obtenez une recette complète.",f2t:"Menu du jour",f2d:"Petit-déjeuner, déjeuner et dîner adaptés.",f3t:"Conseils cuisine",f3d:"Posez vos questions, obtenez des réponses d'expert.",f4t:"Historique",f4d:"Retrouvez toutes vos recettes sauvegardées.",f5t:"Hors ligne",f5d:"Accédez à vos recettes sans connexion.",f6t:"Partage WhatsApp",f6d:"Partagez vos recettes en un clic.",lang_t:"Disponible en <span>9 langues</span>",lang_s:"Pour toute l'Afrique et le monde entier",how_badge:"Comment ça marche",how_title:"Simple comme<br/><span>bonjour</span>",how_sub:"3 étapes pour votre recette parfaite.",s1t:"Entrez vos ingrédients",s1d:"Tapez ce que vous avez dans votre cuisine.",s2t:"Chef Ola analyse",s2d:"Notre IA crée une recette personnalisée en secondes.",s3t:"Cuisinez et régalez-vous",s3d:"Suivez les étapes et partagez avec vos proches.",cta_t:"Prêt à cuisiner avec<br/><span>Chef Ola IA ?</span>",cta_s:"Gratuit, rapide et disponible partout.",btn_cta:"🍳 Commencer maintenant",nav_cta:"Essayer"},
+  en:{badge:"AI Assistant • 100% Free",hero_title:"Cook better with<br/><span>Artificial Intelligence</span>",hero_sub:"Chef Ola IA analyzes your ingredients and generates complete recipes in seconds.",btn_try:"🍳 Try for free",btn_disc:"✨ Discover",s1:"Languages",s2:"Recipes",s3:"Free",s4:"Available",feat_badge:"Features",feat_title:"Everything you need<br/><span>to cook better</span>",feat_sub:"A complete, simple and intelligent app.",f1t:"AI Recipes",f1d:"Enter your ingredients, get a complete recipe.",f2t:"Daily menu",f2d:"Breakfast, lunch and dinner adapted to your ingredients.",f3t:"Cooking tips",f3d:"Ask questions, get instant expert answers.",f4t:"History",f4d:"Find all your automatically saved recipes.",f5t:"Offline mode",f5d:"Access your recipes without internet.",f6t:"WhatsApp sharing",f6d:"Share your recipes in one click.",lang_t:"Available in <span>9 languages</span>",lang_s:"For all of Africa and the world",how_badge:"How it works",how_title:"Simple as<br/><span>can be</span>",how_sub:"3 steps to your perfect recipe.",s1t:"Enter your ingredients",s1d:"Type what you have in your kitchen.",s2t:"Chef Ola analyzes",s2d:"Our AI creates a personalized recipe in seconds.",s3t:"Cook and enjoy",s3d:"Follow the steps and share with your loved ones.",cta_t:"Ready to cook with<br/><span>Chef Ola IA?</span>",cta_s:"Free, fast and available everywhere.",btn_cta:"🍳 Start now",nav_cta:"Try it"},
+  es:{badge:"Asistente IA • 100% Gratis",hero_title:"Cocina mejor con<br/><span>Inteligencia Artificial</span>",hero_sub:"Chef Ola IA analiza tus ingredientes y genera recetas completas en segundos.",btn_try:"🍳 Probar gratis",btn_disc:"✨ Descubrir",s1:"Idiomas",s2:"Recetas",s3:"Gratis",s4:"Disponible",feat_badge:"Funcionalidades",feat_title:"Todo lo que necesitas<br/><span>para cocinar</span>",feat_sub:"Una app completa, simple e inteligente.",f1t:"Recetas IA",f1d:"Ingresa tus ingredientes, obtén una receta completa.",f2t:"Menú del día",f2d:"Desayuno, almuerzo y cena adaptados.",f3t:"Consejos",f3d:"Haz preguntas, obtén respuestas de experto.",f4t:"Historial",f4d:"Encuentra todas tus recetas guardadas.",f5t:"Sin conexión",f5d:"Accede a tus recetas sin internet.",f6t:"Compartir WhatsApp",f6d:"Comparte tus recetas en un clic.",lang_t:"Disponible en <span>9 idiomas</span>",lang_s:"Para toda África y el mundo",how_badge:"Cómo funciona",how_title:"Simple como<br/><span>el ABC</span>",how_sub:"3 pasos para tu receta perfecta.",s1t:"Ingresa tus ingredientes",s1d:"Escribe lo que tienes en tu cocina.",s2t:"Chef Ola analiza",s2d:"Nuestra IA crea una receta personalizada.",s3t:"Cocina y disfruta",s3d:"Sigue los pasos y comparte con tus seres queridos.",cta_t:"¿Listo para cocinar con<br/><span>Chef Ola IA?</span>",cta_s:"Gratis, rápido y disponible en todas partes.",btn_cta:"🍳 Empezar ahora",nav_cta:"Probar"},
+  de:{badge:"KI-Assistent • 100% Kostenlos",hero_title:"Besser kochen mit<br/><span>Künstlicher Intelligenz</span>",hero_sub:"Chef Ola IA analysiert deine Zutaten und erstellt in Sekunden vollständige Rezepte.",btn_try:"🍳 Kostenlos testen",btn_disc:"✨ Entdecken",s1:"Sprachen",s2:"Rezepte",s3:"Kostenlos",s4:"Verfügbar",feat_badge:"Funktionen",feat_title:"Alles was du brauchst<br/><span>zum Kochen</span>",feat_sub:"Eine vollständige, einfache und intelligente App.",f1t:"KI-Rezepte",f1d:"Gib deine Zutaten ein, erhalte ein vollständiges Rezept.",f2t:"Tagesmenü",f2d:"Frühstück, Mittag- und Abendessen angepasst.",f3t:"Kochtipps",f3d:"Stelle Fragen, erhalte sofortige Expertenantworten.",f4t:"Verlauf",f4d:"Finde alle deine gespeicherten Rezepte.",f5t:"Offline",f5d:"Greife ohne Internet auf deine Rezepte zu.",f6t:"WhatsApp teilen",f6d:"Teile deine Rezepte mit einem Klick.",lang_t:"Verfügbar in <span>9 Sprachen</span>",lang_s:"Für ganz Afrika und die Welt",how_badge:"Wie es funktioniert",how_title:"Einfach wie<br/><span>1-2-3</span>",how_sub:"3 Schritte zu deinem perfekten Rezept.",s1t:"Zutaten eingeben",s1d:"Tippe ein, was du in deiner Küche hast.",s2t:"Chef Ola analysiert",s2d:"Unsere KI erstellt in Sekunden ein personalisiertes Rezept.",s3t:"Kochen und genießen",s3d:"Folge den Schritten und teile mit deinen Lieben.",cta_t:"Bereit mit<br/><span>Chef Ola IA zu kochen?</span>",cta_s:"Kostenlos, schnell und überall verfügbar.",btn_cta:"🍳 Jetzt starten",nav_cta:"Testen"},
+  zh:{badge:"AI助手 • 100%免费",hero_title:"用<br/><span>人工智能</span>更好地烹饪",hero_sub:"Chef Ola IA分析您的食材，在几秒钟内生成完整食谱。",btn_try:"🍳 免费试用",btn_disc:"✨ 了解更多",s1:"语言",s2:"食谱",s3:"免费",s4:"可用",feat_badge:"功能特点",feat_title:"您烹饪所需的<br/><span>一切</span>",feat_sub:"一款完整、简单、智能的应用。",f1t:"AI食谱",f1d:"输入食材，获得完整食谱。",f2t:"每日菜单",f2d:"早餐、午餐和晚餐，适合您的食材。",f3t:"烹饪建议",f3d:"提问，立即获得专家答案。",f4t:"历史记录",f4d:"找到所有自动保存的食谱。",f5t:"离线模式",f5d:"无需网络即可访问食谱。",f6t:"WhatsApp分享",f6d:"一键分享您的食谱。",lang_t:"支持<span>9种语言</span>",lang_s:"面向非洲和全世界",how_badge:"使用方法",how_title:"简单<br/><span>易用</span>",how_sub:"3步获得完美食谱。",s1t:"输入食材",s1d:"输入您厨房里有的食材。",s2t:"Chef Ola分析",s2d:"我们的AI在几秒钟内创建个性化食谱。",s3t:"烹饪享用",s3d:"按照步骤操作，与亲人分享。",cta_t:"准备好用<br/><span>Chef Ola IA</span>烹饪了吗？",cta_s:"免费、快速、随处可用。",btn_cta:"🍳 立即开始",nav_cta:"试用"},
+  ja:{badge:"AIアシスタント • 完全無料",hero_title:"<span>人工知能</span>で<br/>より上手に料理を",hero_sub:"Chef Ola IAが食材を分析し、数秒で完全なレシピを生成します。",btn_try:"🍳 無料で試す",btn_disc:"✨ 詳しく見る",s1:"言語",s2:"レシピ",s3:"無料",s4:"利用可能",feat_badge:"機能",feat_title:"料理に必要な<br/><span>すべてが揃う</span>",feat_sub:"完全でシンプルなインテリジェントアプリ。",f1t:"AIレシピ",f1d:"食材を入力して完全なレシピを取得。",f2t:"デイリーメニュー",f2d:"朝食、昼食、夕食が食材に合わせて。",f3t:"料理のヒント",f3d:"質問して専門家の回答を即座に取得。",f4t:"履歴",f4d:"保存されたすべてのレシピを確認。",f5t:"オフラインモード",f5d:"インターネットなしでレシピにアクセス。",f6t:"WhatsApp共有",f6d:"ワンクリックでレシピを共有。",lang_t:"<span>9言語</span>対応",lang_s:"アフリカ全土と世界のために",how_badge:"使い方",how_title:"とても<br/><span>簡単</span>",how_sub:"3ステップで完璧なレシピ。",s1t:"食材を入力",s1d:"キッチンにあるものを入力してください。",s2t:"Chef Olaが分析",s2d:"AIが数秒でパーソナライズされたレシピを作成。",s3t:"料理して楽しむ",s3d:"手順に従って大切な人と共有。",cta_t:"<span>Chef Ola IA</span>で<br/>料理する準備はできましたか？",cta_s:"無料、高速、どこでも利用可能。",btn_cta:"🍳 今すぐ始める",nav_cta:"試す"},
+  ko:{badge:"AI 어시스턴트 • 100% 무료",hero_title:"<span>인공지능</span>으로<br/>더 잘 요리하세요",hero_sub:"Chef Ola IA가 재료를 분석하고 몇 초 만에 완전한 레시피를 생성합니다.",btn_try:"🍳 무료로 시작",btn_disc:"✨ 더 알아보기",s1:"언어",s2:"레시피",s3:"무료",s4:"이용 가능",feat_badge:"기능",feat_title:"요리에 필요한<br/><span>모든 것</span>",feat_sub:"완전하고 간단한 지능형 앱.",f1t:"AI 레시피",f1d:"재료를 입력하고 완전한 레시피를 받으세요.",f2t:"오늘의 메뉴",f2d:"재료에 맞는 아침, 점심, 저녁 식사.",f3t:"요리 팁",f3d:"질문하고 즉시 전문가 답변을 받으세요.",f4t:"히스토리",f4d:"저장된 모든 레시피를 찾아보세요.",f5t:"오프라인 모드",f5d:"인터넷 없이 레시피에 접근하세요.",f6t:"WhatsApp 공유",f6d:"클릭 한 번으로 레시피를 공유하세요.",lang_t:"<span>9개 언어</span>로 제공",lang_s:"아프리카 전역과 전 세계를 위해",how_badge:"사용 방법",how_title:"정말<br/><span>간단해요</span>",how_sub:"완벽한 레시피를 위한 3단계.",s1t:"재료 입력",s1d:"주방에 있는 것을 입력하세요.",s2t:"Chef Ola 분석",s2d:"AI가 몇 초 만에 맞춤형 레시피를 만들어요.",s3t:"요리하고 즐기세요",s3d:"단계를 따라하고 소중한 사람들과 공유하세요.",cta_t:"<span>Chef Ola IA</span>로<br/>요리할 준비가 됐나요?",cta_s:"무료, 빠르고 어디서나 이용 가능.",btn_cta:"🍳 지금 시작하기",nav_cta:"시작하기"},
+  yo:{badge:"Olùrànlọ́wọ́ IA • Ọ̀fẹ́ pátápátá",hero_title:"Jẹ ounjẹ dára pẹ̀lú<br/><span>Ọgbọ́n Àtọwọdá</span>",hero_sub:"Chef Ola IA ṣe àyẹ̀wò àwọn ohun elo rẹ tí ó sì ṣẹ̀dá ounjẹ kún ín ín.",btn_try:"🍳 Gbiyanju lọ́fẹ̀",btn_disc:"✨ Ṣàwárí",s1:"Àwọn èdè",s2:"Ounjẹ",s3:"Ọ̀fẹ́",s4:"Wà",feat_badge:"Àwọn ẹ̀yà",feat_title:"Ohun gbogbo tí o nílò<br/><span>fún sísè ounjẹ</span>",feat_sub:"Ohun èlò tí ó pé, rọrùn àti ọlọgbọn.",f1t:"Ounjẹ IA",f1d:"Tẹ ohun elo rẹ, gba ounjẹ kún.",f2t:"Àkójọ ounjẹ ọjọ",f2d:"Ounjẹ àárọ̀, ọsan àti alẹ.",f3t:"Ìmọ̀ràn sísè",f3d:"Beere ibeere, gba àwọn ìdáhùn.",f4t:"Ìtàn",f4d:"Rí gbogbo àwọn ounjẹ rẹ tí a pamọ́.",f5t:"Láìsí íntánẹ́ẹ̀tì",f5d:"Wọlé sí ounjẹ rẹ láìsí íntánẹ́ẹ̀tì.",f6t:"Pín lórí WhatsApp",f6d:"Pín ounjẹ rẹ ní ìtẹ̀ kan.",lang_t:"Wà ní <span>àwọn èdè 9</span>",lang_s:"Fún Áfríkà àti gbogbo ayé",how_badge:"Bí ó ṣe ń ṣiṣẹ́",how_title:"Rọrùn<br/><span>gan-an</span>",how_sub:"Ìgbésẹ̀ 3 fún ounjẹ pípé rẹ.",s1t:"Tẹ ohun elo rẹ",s1d:"Kọ ohun tí o ní nínú ibi ìdánà rẹ.",s2t:"Chef Ola ṣe àyẹ̀wò",s2d:"IA wa ṣẹ̀dá ounjẹ tí a ṣe pàtó fún ọ.",s3t:"Jẹ kí a sè ounjẹ",s3d:"Tẹ̀lé àwọn ìgbésẹ̀ tí o pín pẹ̀lú ẹbí rẹ.",cta_t:"Ṣe o ṣetán láti sè pẹ̀lú<br/><span>Chef Ola IA?</span>",cta_s:"Ọ̀fẹ́, yára àti wà níbikíbi.",btn_cta:"🍳 Bẹ̀rẹ̀ nísinsìnyí",nav_cta:"Gbiyanju"},
+  fon:{badge:"Àlìgbà IA • Dó hwenu",hero_title:"Wlán nùblɔ̀ ɖagbe hú<br/><span>Amlɔkunnú Tɔn</span>",hero_sub:"Chef Ola IA ɖò hwi towe lɛ kpɔ́n wɛ bo na wlán nùblɔ̀ towe.",btn_try:"🍳 Lɛ́ vlɛ dó hwenu",btn_disc:"✨ Mɔ tawun",s1:"Gbè lɛ",s2:"Nùblɔ̀",s3:"Dó hwenu",s4:"Ðò",feat_badge:"Nǔ e é sixu wà",feat_title:"Nǔ e a hɛn ɖó<br/><span>bo na wlán nùblɔ̀</span>",feat_sub:"Appli ɖé e ɖó nǔ bǐ, e jɛxa bo ɖò amlɔkunnú.",f1t:"Nùblɔ̀ IA",f1d:"Ðó hwi towe bo mɔ nùblɔ̀ ɖé.",f2t:"Nùkplɔ̀nmɛ zǎn ɖokpo",f2d:"Nùblɔ̀ zǎzǎ, fínfɔ́n kɔ alɔ.",f3t:"Xósin",f3d:"Sprɛ́ nùkanbyɔ bo mɔ xósin.",f4t:"Nukɔntɔn",f4d:"Mɔ nùblɔ̀ towe bǐ e a kpé.",f5t:"Gbɔn internet mɛ ǎ",f5d:"Wà dó nùblɔ̀ towe gbɔn internet mɛ ǎ.",f6t:"Sɛ́n WhatsApp jí",f6d:"Sɛ́n nùblɔ̀ towe ɖó click ɖokpo.",lang_t:"Ðò gbè <span>9 mɛ</span>",lang_s:"Nú Áfríkà bǐ kɔ gbɛ̀ bǐ",how_badge:"Nɛ́ é ɖò wà",how_title:"Nyɔ́<br/><span>tawun</span>",how_sub:"Azǎn 3 nú nùblɔ̀ towe.",s1t:"Ðó hwi towe",s1d:"Ŋlɔ nǔ e ɖò xɔ towe mɛ.",s2t:"Chef Ola kpɔ́n",s2d:"IA mǐtɔn wlán nùblɔ̀ ɖé nú we.",s3t:"Wlán bo ɖù",s3d:"Xwedó azǎn lɛ bo sɛ́n xɔ́ntɔn towe.",cta_t:"A ɖò jɛ wɛ à bo na wlán<br/><span>Chef Ola IA</span> jí?",cta_s:"Dó hwenu, gblɔgblɔ bo ɖò fí bǐ.",btn_cta:"🍳 Bɛ́ sín égbé",nav_cta:"Lɛ́ vlɛ"}
+};
+
+let lang = localStorage.getItem('landing_lang') || 'fr';
+
+function changeLang(l) {
+  lang = l;
+  localStorage.setItem('landing_lang', l);
+  applyLang();
+}
+
+function applyLang() {
+  const t = L[lang] || L.fr;
+  document.getElementById('badge-text').textContent = t.badge;
+  document.getElementById('hero-title').innerHTML = t.hero_title;
+  document.getElementById('hero-subtitle').textContent = t.hero_sub;
+  document.getElementById('btn-try').innerHTML = t.btn_try;
+  document.getElementById('btn-discover').innerHTML = t.btn_disc;
+  document.getElementById('stat1').textContent = t.s1;
+  document.getElementById('stat2').textContent = t.s2;
+  document.getElementById('stat3').textContent = t.s3;
+  document.getElementById('stat4').textContent = t.s4;
+  document.getElementById('feat-badge').textContent = t.feat_badge;
+  document.getElementById('feat-title').innerHTML = t.feat_title;
+  document.getElementById('feat-sub').textContent = t.feat_sub;
+  document.getElementById('f1-title').textContent = t.f1t;
+  document.getElementById('f1-desc').textContent = t.f1d;
+  document.getElementById('f2-title').textContent = t.f2t;
+  document.getElementById('f2-desc').textContent = t.f2d;
+  document.getElementById('f3-title').textContent = t.f3t;
+  document.getElementById('f3-desc').textContent = t.f3d;
+  document.getElementById('f4-title').textContent = t.f4t;
+  document.getElementById('f4-desc').textContent = t.f4d;
+  document.getElementById('f5-title').textContent = t.f5t;
+  document.getElementById('f5-desc').textContent = t.f5d;
+  document.getElementById('f6-title').textContent = t.f6t;
+  document.getElementById('f6-desc').textContent = t.f6d;y 
+  document.getElementById('lang-title').innerHTML = t.lang_t;
+  document.getElementById('lang-sub').textContent = t.lang_s;
+  document.getElementById('how-badge').textContent = t.how_badge;
+  document.getElementById('how-title').innerHTML = t.how_title;
+  document.getElementById('how-sub').textContent = t.how_sub;
+  document.getElementById('s1-title').textContent = t.s1t;
+  document.getElementById('s1-desc').textContent = t.s1d;
+  document.getElementById('s2-title').textContent = t.s2t;
+  document.getElementById('s2-desc').textContent = t.s2d;
+  document.getElementById('s3-title').textContent = t.s3t;
+  document.getElementById('s3-desc').textContent = t.s3d;
+  document.getElementById('cta-title').innerHTML = t.cta_t;
+  document.getElementById('cta-sub').textContent = t.cta_s;
+  document.getElementById('btn-cta').innerHTML = t.btn_cta;
+  document.getElementById('nav-cta').textContent = t.nav_cta;
+  document.getElementById('lang-select').value = lang;
+}
+
+const savedLang = localStorage.getItem('landing_lang') || 'fr';
+lang = savedLang;
+document.getElementById('lang-select').value = savedLang;
+applyLang();
+</script>
+</body>
+</html>
