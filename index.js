@@ -24,6 +24,9 @@ app.get("/app", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
+app.get("/landing.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "landing.html"));
+});
 // ══════════════════════════════════════════════════════
 // ROUTE /chat — OlaPrestige Chatbot
 // Remplace le _fallback() statique de OlaBot v7
