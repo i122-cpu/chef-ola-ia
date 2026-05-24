@@ -9,17 +9,16 @@ app.use(express.json());
 
 const client = new Mistral({ apiKey: process.env.MISTRAL_API_KEY });
 
-// Landing page
+// ✅ ROUTES AVANT le static middleware
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "landing.html"));
 });
 
-// App principale
 app.get("/app", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// Fichiers statiques APRES les routes
+// ✅ Static middleware APRES les routes
 app.use(express.static(path.join(__dirname, "public")));
 
 app.post("/recipe", async (req, res) => {
@@ -40,7 +39,6 @@ Génère une recette complète en ${lang} avec :
 5. 👨‍🍳 Étapes détaillées et simples
 6. 💡 Un conseil du chef
 Si un ingrédient manque, propose une alternative simple.
-Sois encourageant et accessible pour les débutants.
   `;
   try {
     const response = await client.chat.complete({
