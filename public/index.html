@@ -178,7 +178,10 @@
       <div class="modal-body" id="modal-body"></div>
     </div>
   </div>
-
+<!-- OFFLINE BANNER -->
+  <div id="offline-banner" style="display:none;position:fixed;bottom:0;left:0;width:100%;background:#1a1a2e;border-top:1px solid #ff6b3530;padding:10px 16px;text-align:center;font-size:13px;color:#ff6b35;z-index:300;">
+    📵 Mode hors ligne — Historique disponible uniquement
+  </div>
   <div class="footer">
     Fait avec ❤️ par <span>Chef Ola IA</span> • Propulsé par Mistral AI
   </div>
@@ -402,7 +405,27 @@
       const text = encodeURIComponent("🍳 Chef Ola IA :\n\n" + lastResult);
       window.open("https://wa.me/?text=" + text, '_blank');
     }
+// SERVICE WORKER
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js');
+    }
 
+    // OFFLINE DETECTION
+    function updateOnlineStatus() {
+      const banner = document.getElementById('offline-banner');
+      if (!navigator.onLine) {
+        banner.style.display = 'block';
+        document.getElementById('btn-main').disabled = true;
+        document.getElementById('btn-main').textContent = '📵 Hors ligne';
+      } else {
+        banner.style.display = 'none';
+        document.getElementById('btn-main').disabled = false;
+        updateTabContent();
+      }
+    }
+    window.addEventListener('online', updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+    updateOnlineStatus();
     // INIT
     const savedLang = localStorage.getItem('chefola_lang') || 'français';
     currentLang = savedLang;
