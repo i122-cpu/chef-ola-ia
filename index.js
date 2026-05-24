@@ -15,7 +15,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/app", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+  res.sendFile(path.join(__dirname, "public", "app.html"));
 });
 
 // ✅ Static middleware APRES les routes
